@@ -1,0 +1,204 @@
+@import 'vars.css';
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  font-family: var(--primary-font-family);
+  font-optical-sizing: auto;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: var(--bg);
+  color: var(--text);
+}
+
+:-moz-focusring {
+  outline: auto;
+}
+
+.dark body {
+  background-color: var(--bg-dark);
+  color: var(--text-dark);
+}
+
+/* Buttons and specifics */
+.btn-primary {
+  @apply mt-2 shadow-md inline-block rounded px-2 py-2 text-xs font-medium uppercase bg-slate-500 text-white hover:bg-slate-600;
+}
+
+.form-input {
+  @apply text-xs outline-none rounded-md p-1 border hover:shadow-md caret-red-500 focus:border-2 focus:border-red-500 text-black bg-white dark:bg-slate-200;
+}
+
+.form-select {
+  @apply block appearance-none outline-none hover:shadow-md focus:outline-offset-0 focus:outline-red-500 rounded-md p-1 ring-1 ring-slate-300 text-black bg-white dark:bg-slate-200;
+}
+
+.label-select {
+  @apply text-xs font-medium pt-2
+}
+
+.home-image {
+  @apply rounded-lg object-contain max-w-80;
+}
+
+.code-below-figure {
+  @apply pt-96 prose text-xs;
+}
+
+/* General */
+h1 {
+  font-size: 2.25em;
+  line-height: 2.5rem;
+  font-weight: 800;
+}
+
+h1,
+h2,
+h3 {
+  letter-spacing: -0.025em;
+}
+
+h1,
+h2 {
+  color: var(--text-strong);
+}
+
+.dark h1,
+.dark h2 {
+  
+  color: var(--text-dark-strong);
+}
+
+h2 {
+  font-size: 1.5em;
+  font-weight: 700;
+}
+
+h3 {
+  font-size: 1.25em;
+  font-weight: 700;
+  color: var(--text-light)
+}
+
+.dark h3 {
+  color: var(--text-dark-light);
+}
+
+p {
+  font-size: 1.125rem;
+  font-weight: 400;
+  line-height: 1.75;
+}
+
+figcaption {
+  font-size: 0.875em;
+  margin-top: 0.25em;
+  margin-bottom: 1em;
+  font-style: italic;
+}
+
+strong {
+  font-weight: 600;
+  color: var(--text-strong);
+}
+
+.dark strong {
+  color: var(--text-dark-strong);
+}
+
+a {
+  @apply font-semibold border-b border-b-cyan-400;
+}
+
+.dark a {
+  @apply text-white font-semibold border-b border-b-cyan-400;
+}
+
+a:hover {
+  @apply border-b-2;
+}
+
+
+
+
+/* PROSE */
+.prose {
+  color: var(--text);
+}
+
+.prose h1,
+.prose h2,
+.prose h3 {
+  letter-spacing: -0.025em;
+}
+
+.prose h1 {
+  font-weight: 800;
+}
+
+.prose h2 {
+  font-size: 1.5em;
+  font-weight: 600;
+  margin-bottom: 1.5em;
+  margin-top: 1.5em;
+}
+
+.prose h3 {
+  font-size: 1.125em;
+  line-height: 1.4;
+  font-weight: 600;
+  margin-bottom: 0em;
+  margin-top: 3em
+}
+
+.prose code {
+  @apply rounded-lg text-sm;
+}
+
+.prose pre {
+  @apply rounded p-2;
+}
+
+.prose a {
+  @apply no-underline font-semibold border-b border-b-indigo-500;
+}
+
+.prose a:hover {
+  @apply border-b-2;
+}
+
+.prose strong {
+  color: var(--text-strong);
+  font-weight: theme('fontWeight.semibold');
+}
+
+.prose figure,
+.prose figurecaption {
+  text-align: center;
+  font-style: italic;
+}
+
+.dark .prose {
+  color: var(--text-dark);
+}
+
+.dark .prose a {
+  @apply no-underline text-white font-semibold border-b border-b-indigo-500;
+}
+
+.dark .prose a:hover {
+  border-bottom-color: var(--vp-c-text-highlight);
+  border-bottom-width: 2px;
+}
+
+.dark .prose strong {
+  color: var(--text-dark-strong);
+}
+
+.dark .prose h1,
+.dark .prose h2,
+.dark .prose h3 {
+  color: var(--text-dark);
+}

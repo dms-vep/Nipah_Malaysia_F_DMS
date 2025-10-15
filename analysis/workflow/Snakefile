@@ -1,0 +1,370 @@
+# Set the config file
+configfile: "config/config.yml"
+
+# Define the order of antibodies for consistent plotting
+antibody_order = ["12B2", "2D3", "4H3", "1A9", "1F2", "2B12"]
+
+# Define which files we want after running the pipeline
+rule all:
+    input:
+        "results/filtered_data/cell_entry/Nipah_F_func_effects_filtered.csv",
+        expand("results/filtered_data/antibody_escape/{antibody}_escape_filtered.csv", antibody=config['antibodies']),
+        "results/filtered_data/antibody_escape/combined/all_antibodies_escape_filtered.csv",
+        "results/figures/antibody_escape/antibody_escape_lineplot.html",
+        "results/filtered_data/antibody_escape/combined/all_antibodies_escape_filtered_sum.csv",
+        "results/chimera/cell_entry/Nipah_F_mean_entry.defattr",
+        expand("results/chimera/antibody_escape/{antibody}_escape.defattr", antibody=config['antibodies']),
+        "results/figures/heatmaps/entry_heatmap.svg",
+        "results/figures/mutation_distribution/mutation_distribution.png",
+        "results/figures/validations/cell_entry_validation_correlation_plot.png",
+        "results/figures/mutation_distribution/mutation_distribution_barcodes.png",
+        "results/figures/validations/escape_validation_plot_ic50.png",
+        "results/figures/accessibility/residue_accessibility_correlation.png",
+        "results/site_differences/nipah_F_variable_sites_detailed.csv",
+        "results/figures/polymorphisms/cell_entry_polymorphisms.png",
+        "results/filtered_data/antibody_escape/combined/escape_minimum_mutation_distance.csv",
+        "results/figures/b2_b3_correlation/F_b2_b3_correlation_plot.png",
+        "results/figures/mean_effects/mean_effects_plot.png",
+        "results/figures/antibody_escape/interface/interface_mean_entry.png",
+        "results/figures/polymorphisms/nipah_F_pairwise_differences.png"
+
+
+
+# ===== Data Processing Rules =====
+rule filter_entry:
+    """
+    Filter the cell entry data based on the number of times seen and standard deviation.
+    """
+    input:
+        entry_df = "../results/func_effects/averages/Nipah-F-CHO-bEFNB3_func_effects.csv"
+    output:
+        entry_effects_filtered = "results/filtered_data/cell_entry/Nipah_F_func_effects_filtered.csv",
+        entry_effects_filtered_mean = "results/filtered_data/cell_entry/Nipah_F_func_effects_filtered_mean.csv",
+    params:
+        times_seen_entry = config['times_seen_entry'],
+        entry_std_dev = config['entry_std_dev'],
+    log:
+        "results/logs/filter_entry_data.log"
+    notebook:
+        "notebooks/filter_cell_entry.ipynb"
+
+rule filter_escape:
+    """
+    Filter the antibody escape data based on the number of times seen and minimum functional effect.
+    """
+    input:
+        escape_df = "../results/antibody_escape/averages/{antibody}_mut_effect.csv",
+        entry_df = rules.filter_entry.output.entry_effects_filtered
+    output:
+        escape_effects_filtered = "results/filtered_data/antibody_escape/{antibody}_escape_filtered.csv",
+        escape_effects_filtered_no_effect_cutoff = "results/filtered_data/antibody_escape/{antibody}_escape_filtered_no_effect_cutoff.csv",
+        escape_effects_filtered_mean = "results/filtered_data/antibody_escape/{antibody}_escape_filtered_mean.csv",
+        escape_effects_filtered_sum = "results/filtered_data/antibody_escape/{antibody}_escape_filtered_sum.csv"
+    params:
+        times_seen_ab = config['times_seen_ab'],
+        min_func_effect = config['min_func_effect'],
+        escape_std_dev = config['escape_std_dev'],
+    log:
+        "results/logs/{antibody}_filter_escape_data.log"
+    notebook:
+        "notebooks/filter_antibody_escape.ipynb"
+
+rule concatenate_escape:
+    """
+    Combine the filtered antibody escape data for all antibodies into a single .csv.
+    """
+    input:
+        escape_files = expand("results/filtered_data/antibody_escape/{antibody}_escape_filtered.csv", antibody=config['antibodies'])
+    output:
+        combined_escape = "results/filtered_data/antibody_escape/combined/all_antibodies_escape_filtered.csv"
+    log:
+        "results/logs/concatenate_escape_data.log"
+    notebook:
+        "notebooks/concatenate_escape.ipynb"
+
+rule concatenate_escape_sum_mean:
+    """
+    Combine the filtered aggregated antibody escape data for all antibodies into a single .csv.
+    """
+    input:
+        escape_files_sum = expand("results/filtered_data/antibody_escape/{antibody}_escape_filtered_sum.csv", antibody=config['antibodies']),
+        escape_files_mean = expand("results/filtered_data/antibody_escape/{antibody}_escape_filtered_mean.csv", antibody=config['antibodies']),
+
+    output:
+        combined_escape_sum = "results/filtered_data/antibody_escape/combined/all_antibodies_escape_filtered_sum.csv",
+        combined_escape_mean = "results/filtered_data/antibody_escape/combined/all_antibodies_escape_filtered_mean.csv",
+
+    log:
+        "results/logs/concatenate_escape_data_sum_mean.log"
+    notebook:
+        "notebooks/concatenate_escape_sum_mean.ipynb"
+
+rule find_variable_sites_from_alignments:
+    """
+    Find polymorphic sites from Hendra and Nipah F protein alignments
+    """
+    input:
+        hendra_F_alignment = "data/seq_alignments/hendra_F_sequences.fasta",
+        nipah_F_alignment = "data/seq_alignments/nipah_F_sequences.fasta"
+    output:
+        hendra_F_variable_sites = "results/site_differences/hendra_F_variable_sites_detailed.csv",
+        nipah_F_variable_sites = "results/site_differences/nipah_F_variable_sites_detailed.csv",
+    log:
+        "results/logs/find_variable_sites_from_alignment.log"
+    notebook:
+        "notebooks/find_variable_sites_from_alignments.ipynb"
+
+rule calculate_minimum_mutation_distance_for_escape:
+    """
+    Calculate the minimum mutation distance for all escape mutations based on Nipah-F wildtype sequence.
+    """
+    input:
+        escape_df = rules.concatenate_escape.output.combined_escape,
+        wildtype_sequence = 'data/NipahF_wildtype.fasta'
+    output:
+        min_mutation_distance = "results/filtered_data/antibody_escape/combined/escape_minimum_mutation_distance.csv"
+    log:
+        "results/logs/calculate_minimum_mutation_distance.log"
+    notebook:
+        "notebooks/calculate_minimum_mutation_distance.ipynb"
+
+# ===== Chimera Visualization Rules =====
+rule prep_escape_for_chimera:
+    """
+    Prepare the filtered escape data for Chimera visualization.
+    """
+    input:
+        escape_df = rules.filter_escape.output.escape_effects_filtered_sum
+    output:
+        chimera_escape_df = "results/chimera/antibody_escape/{antibody}_escape.defattr",
+    log:
+        "results/logs/{antibody}_prep_escape_data_for_chimera.log"
+    notebook:
+        "notebooks/prep_escape_data_for_chimera.ipynb"
+
+rule prep_filtered_agg_entry_data_for_chimera:
+    """
+    Prepare the filtered and aggregated entry data for Chimera visualization.
+    """
+    input:
+        entry_df = rules.filter_entry.output.entry_effects_filtered_mean,
+    output:
+        chimera_entry_df = "results/chimera/cell_entry/Nipah_F_mean_entry.defattr",
+    log:
+        "results/logs/prep_filtered_agg_entry_data_for_chimera.log"
+    notebook:
+        "notebooks/prep_entry_data_for_chimera.ipynb"
+
+# ===== Visualization Rules =====
+rule plot_mutation_distribution:
+    """
+    Plot the mutation distribution from the codon variants data and total number of barcodes.
+    """
+    input:
+        variants_df = "../results/variants/codon_variants.csv"
+    output:
+        chart_png = "results/figures/mutation_distribution/mutation_distribution.png",
+        chart_svg = "results/figures/mutation_distribution/mutation_distribution.svg",
+        barcodes_png = "results/figures/mutation_distribution/mutation_distribution_barcodes.png",
+        barcodes_svg = "results/figures/mutation_distribution/mutation_distribution_barcodes.svg",
+    log:
+        "results/logs/mutation_distribution.log"
+    notebook:
+        "notebooks/mutation_distribution.ipynb"
+
+rule plot_antibody_escape_lineplot:
+    """
+    Plot an antibody escape line plot for all antibodies using altair.
+    """
+    input:
+        escape_df = rules.concatenate_escape_sum_mean.output.combined_escape_sum,
+    output:
+        antibody_escape_line_plot_svg = "results/figures/antibody_escape/antibody_escape_lineplot.svg",
+        antibody_escape_line_plot_png = "results/figures/antibody_escape/antibody_escape_lineplot.png",
+        antibody_escape_line_plot_html = "results/figures/antibody_escape/antibody_escape_lineplot.html",
+    params:
+        antibody_order = antibody_order,
+    log:
+        "results/logs/antibody_escape_lineplot.log"
+    notebook:
+        "notebooks/antibody_escape_lineplot.ipynb"
+
+
+
+
+rule plot_heatmap:
+    """
+    Make a wrapped heatmap for the entry data using altair.
+    """
+    input:
+        entry_df = rules.filter_entry.output.entry_effects_filtered
+    output:
+        entry_heatmap_svg = "results/figures/heatmaps/entry_heatmap.svg",
+        entry_heatmap_png = "results/figures/heatmaps/entry_heatmap.png",
+        entry_heatmap_html = "results/figures/heatmaps/entry_heatmap.html",
+    log:
+        "results/logs/heatmap.log"
+    notebook:
+        "notebooks/wrapped_heatmap.ipynb"
+
+
+rule plot_cell_entry_validation_correlation:
+    """
+    Make a correlation plot for the cell entry validation data.
+    """
+    input:
+        validation_df = "data/experimental_data/entry_validation_luciferase_RLU.csv",
+        entry_df = rules.filter_entry.output.entry_effects_filtered,
+    output:
+        cell_entry_validation_correlation_plot = "results/figures/validations/cell_entry_validation_correlation_plot.svg",
+        cell_entry_validation_correlation_plot_png = "results/figures/validations/cell_entry_validation_correlation_plot.png",
+    log:
+        "results/logs/cell_entry_validation_correlation_plot.log"
+    notebook:
+        "notebooks/cell_entry_validation.ipynb"
+
+rule plot_antibody_validation_correlation:
+    """
+    Make a correlation plot for the escape validation data.
+    """
+    input:
+        neut_data = "data/experimental_data/neuts_data/250612_4H3_antibody_validations.csv",
+        escape_df_4H3 = "results/filtered_data/antibody_escape/4H3_escape_filtered.csv",
+    output:
+        ic50_data = "results/ic50_data/4H3_escape_validation_ic50.csv",
+        escape_validation_plot = "results/figures/validations/escape_validation_plot_ic50.svg",
+        escape_validation_plot_png = "results/figures/validations/escape_validation_plot_ic50.png",
+
+    log:
+        "results/logs/escape_validation_plot.log"
+    notebook:
+        "notebooks/antibody_4H3_escape_validation.ipynb"
+
+rule plot_accessibility_vs_entry:
+    """
+    Make a correlation plot of residue accessibility and cell entry scores.
+    """
+    input:
+        pdb = "data/pdb/5evm.pdb1",
+        entry_df = rules.filter_entry.output.entry_effects_filtered_mean,
+    output:
+        accessibility_df = "results/residue_accessibility/5evm_accessibility.csv",
+        access_vs_effect_all_svg = "results/figures/accessibility/residue_accessibility_correlation.svg",
+        access_vs_effect_all_png = "results/figures/accessibility/residue_accessibility_correlation.png",
+        access_vs_effect_residue_type_svg = "results/figures/accessibility/residue_accessibility_correlation_residue_type.svg",
+        access_vs_effect_residue_type_png = "results/figures/accessibility/residue_accessibility_correlation_residue_type.png",
+    log:
+        "results/logs/entry_correlations_residue_accessibility.log"
+    notebook:
+        "notebooks/entry_correlations_residue_accessibility.ipynb"
+
+rule plot_effect_of_polymorphisms:
+    """
+    Make a correlation plot of residue accessibility and cell entry scores.
+    """
+    input:
+        entry_df = rules.filter_entry.output.entry_effects_filtered,
+        hendra_poly_df = rules.find_variable_sites_from_alignments.output.hendra_F_variable_sites,
+        nipah_poly_df = rules.find_variable_sites_from_alignments.output.nipah_F_variable_sites,
+        escape_df = rules.concatenate_escape.output.combined_escape
+        
+    output:
+        cell_entry_plot_svg = "results/figures/polymorphisms/cell_entry_polymorphisms.svg",
+        cell_entry_plot_png = "results/figures/polymorphisms/cell_entry_polymorphisms.png",
+        escape_plot_svg = "results/figures/polymorphisms/escape_polymorphisms.svg",
+        escape_plot_png = "results/figures/polymorphisms/escape_polymorphisms.png",
+    params:
+        antibody_order = antibody_order,
+    log:
+        "results/logs/plot_effect_of_polymorphisms.log"
+    notebook:
+        "notebooks/plot_effect_of_polymorphisms.ipynb"
+
+rule plot_b2_b3_correlations:
+    """
+    Make a correlation plot of B2 and B3 mutation effects
+    """
+    input:
+        F_b2 = "../results/func_effects/averages/Nipah-F-CHO-bEFNB2_func_effects.csv",
+        F_b3 = "../results/func_effects/averages/Nipah-F-CHO-bEFNB3_func_effects.csv",
+        RBP_b2 = "../../../2023/Nipah_Malaysia_RBP_DMS/results/filtered_data/entry/e2_entry_filtered.csv",
+        RBP_b3 = "../../../2023/Nipah_Malaysia_RBP_DMS/results/filtered_data/entry/e3_entry_filtered.csv",
+    output:
+        F_corrs_plot_svg = "results/figures/b2_b3_correlation/F_b2_b3_correlation_plot.svg",
+        F_corrs_plot_png = "results/figures/b2_b3_correlation/F_b2_b3_correlation_plot.png",
+        RBP_corrs_plot_svg = "results/figures/b2_b3_correlation/mean_F_RBP_b2_b3_correlation_plot.svg",
+        RBP_corrs_plot_png = "results/figures/b2_b3_correlation/mean_F_RBP_b2_b3_correlation_plot.png",
+    params:
+        min_times_seen = config['times_seen_entry'],
+        max_effect_std = config['entry_std_dev'],
+    log:
+        "results/logs/ephrin_b2_b3_correlation.log"
+    notebook:
+        "notebooks/ephrin_b2_b3_correlation.ipynb"
+
+rule plot_mean_effects_of_mutations:
+    """
+    Plot the mean effects of mutations for cell entry 
+    """
+    input:
+        entry_df = rules.filter_entry.output.entry_effects_filtered_mean,
+    output:
+        mean_effects_boxplot_svg = "results/figures/mean_effects/mean_effects_plot.svg",
+        mean_effects_boxplot_png = "results/figures/mean_effects/mean_effects_plot.png",
+        mean_effects_site_bar_svg = "results/figures/mean_effects/mean_effects_site_barplot.svg",
+        mean_effects_site_bar_png = "results/figures/mean_effects/mean_effects_site_barplot.png",
+        cleavage_bar_svg = "results/figures/mean_effects/cleavage_barplot.svg",
+        cleavage_bar_png = "results/figures/mean_effects/cleavage_barplot.png",
+        fusion_bar_svg = "results/figures/mean_effects/fusion_barplot.svg",
+        fusion_bar_png = "results/figures/mean_effects/fusion_barplot.png",
+        HRA_top_bar_svg = "results/figures/mean_effects/HRA_top_barplot.svg",
+        HRA_top_bar_png = "results/figures/mean_effects/HRA_top_barplot.png",
+        HRA_bot_bar_svg = "results/figures/mean_effects/HRA_bot_barplot.svg",
+        HRA_bot_bar_png = "results/figures/mean_effects/HRA_bot_barplot.png",
+        HRB_bar_svg = "results/figures/mean_effects/HRB_barplot.svg",
+        HRB_bar_png = "results/figures/mean_effects/HRB_barplot.png",
+        HRC_bar_svg = "results/figures/mean_effects/HRC_barplot.svg",
+        HRC_bar_png = "results/figures/mean_effects/HRC_barplot.png",
+    log:
+        "results/logs/plot_mean_effects_by_region.log"
+    notebook:
+        "notebooks/plot_mean_effects_by_region.ipynb"
+
+rule plot_antibody_interface:
+    """
+    Plot information on the antibody interface
+    """
+    input:
+        entry_df = rules.filter_entry.output.entry_effects_filtered_mean,
+        escape_df_mean = rules.concatenate_escape_sum_mean.output.combined_escape_mean,
+        escape_df = rules.concatenate_escape.output.combined_escape,
+        distances_df = 'results/atomic_distances/combined_distances.csv',
+        interface_df = 'data/mAb_interface_sites.csv',
+    output:
+        escape_vs_dist = "results/figures/antibody_escape/interface/escape_vs_distance.png",
+        escape_vs_dist_svg = "results/figures/antibody_escape/interface/escape_vs_distance.svg",
+        interface_mean_entry = "results/figures/antibody_escape/interface/interface_mean_entry.png",
+        interface_mean_entry_svg = "results/figures/antibody_escape/interface/interface_mean_entry.svg",
+        interface_bsa_bonds = "results/figures/antibody_escape/interface/interface_bsa_bonds.png",
+        interface_bsa_bonds_svg = "results/figures/antibody_escape/interface/interface_bsa_bonds.svg",
+    params:
+        antibody_order = antibody_order,
+        min_distance = config['min_distance_interface'],
+    log:
+        "results/logs/antibody_interface.log"
+    notebook:
+        "notebooks/antibody_interface.ipynb"
+
+rule plot_nipahF_pairwise_differences:
+    """
+    Plot the distribution of pairwise amino acid differences between Nipah F sequences
+    """
+    input:
+        differences_df = "data/seq_alignments/nipahF_amino_acid_diffs.csv",
+    output:
+        differences_plot_png = "results/figures/polymorphisms/nipah_F_pairwise_differences.png",
+        differences_plot_svg = "results/figures/polymorphisms/nipah_F_pairwise_differences.svg",
+    log:
+        "results/logs/plot_nipahF_pairwise_differences.log"
+    notebook:
+        "notebooks/pairwise_nipahF_differences.ipynb"

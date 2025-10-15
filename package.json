@@ -1,0 +1,31 @@
+{
+  "type": "module",
+  "devDependencies": {
+    "@tailwindcss/typography": "^0.5.13",
+    "autoprefixer": "^10.4.19",
+    "postcss": "^8.5.6",
+    "prettier": "^3.2.5",
+    "prettier-plugin-tailwindcss": "0.5.14",
+    "tailwindcss": "^3.4.3",
+    "vitepress": "^1.6.4"
+  },
+  "scripts": {
+    "docs:dev": "vitepress dev homepage",
+    "docs:build": "vitepress build homepage",
+    "docs:preview": "vitepress preview homepage",
+    "remote:docs:dev": "vitepress dev homepage --host 0.0.0.0 "
+  },
+  "dependencies": {
+    "@iconify/vue": "^3.0.0",
+    "@vueuse/core": "10.9.0",
+    "d3": "^7.8.5",
+    "shiki": "^1.6.1",
+    "vue": "^3.5.13"
+  },
+  "postcss": {
+    "plugins": {
+      "tailwindcss": {},
+      "autoprefixer": {}
+    }
+  }
+}

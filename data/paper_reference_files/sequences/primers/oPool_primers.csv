@@ -1,0 +1,13 @@
+﻿Primer_name,Sequence,Notes
+BL_Pool1_Fwd,CCAGGCAGCATGTTGTAGTG,For amplifying  specific amplicons from oligo pool
+BL_Pool1_Rev,CTGATTCCATCGGCTCGTAC,For amplifying  specific amplicons from oligo pool
+BL_Pool2_Fwd,TGGAGAGACTACGCACTGAC,For amplifying  specific amplicons from oligo pool
+BL_Pool2_Rev,GACCATCTCGTACACTGTGC,For amplifying  specific amplicons from oligo pool
+BL_Pool3_Fwd,TCAAGCACTGCACTCAAGTC,For amplifying  specific amplicons from oligo pool
+BL_Pool3_Rev,CATGGTAGTGACGAGTGAGG,For amplifying  specific amplicons from oligo pool
+BL_Pool4_Fwd,TCATCCATCCAGTACGCCAG,For amplifying  specific amplicons from oligo pool
+BL_Pool4_Rev,GTTACCGACGTATGCTGCTG,For amplifying  specific amplicons from oligo pool
+BL_Pool5_Fwd,CGAGTCCAGTTACGGAGATG,For amplifying  specific amplicons from oligo pool
+BL_Pool5_Rev,CATGGATGGACGCAAGACAG,For amplifying  specific amplicons from oligo pool
+BL_Pool6_Fwd,AGGTTAGACAGGCTGACGTG,For amplifying  specific amplicons from oligo pool
+BL_Pool6_Rev,GCAGTTGAGGTGATGACAGC,For amplifying  specific amplicons from oligo pool

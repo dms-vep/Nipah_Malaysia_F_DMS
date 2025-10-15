@@ -1,0 +1,11 @@
+﻿Primer_name,Sequence (5' to 3'),Purpose
+PacBio_5pri_G,ctagccattcagagGCAGCCGAGCCACgTCGCTC,To amplify full Nipah F sequences containing barcode for PacBio sequencing and add a G or C tag to estimate strand exchange
+PacBio_3pri_C,CGCTCAACCAGTACGAGCCGTAAGTTATGTAACGCGGAACTCCACcAGGAAC,To amplify full Nipah F sequences containing barcode for PacBio sequencing and add a G or C tag to estimate strand exchange
+PacBio_5pri_C,ctagccattcagagGCAGCCGAGCCACcTCGCTC,To amplify full Nipah F sequences containing barcode for PacBio sequencing and add a G or C tag to estimate strand exchange
+PacBio_3pri_G,CGCTCAACCAGTACGAGCCGTAAGTTATGTAACGCGGAACTCCACgAGGAAC,To amplify full Nipah F sequences containing barcode for PacBio sequencing and add a G or C tag to estimate strand exchange
+5’_PB_Rnd2,CTAGCCATTCAGAGGCAGCCGAG,2nd round primers to amplify full Nipah F sequences containing barcode for PacBio sequencing 
+3’_PB_Rnd2,CGCTCAACCAGTACGAGCCGTAAGTTATGTAAC,2nd round primers to amplify full Nipah F sequences containing barcode for PacBio sequencing 
+Illumina_Rnd1_For,CTCTTTCCCTACACGACGCTCTTCCGATCT,1st round primers for amplifying amplicon containing barcode for Illumina sequencing
+Illumina_Rnd1_Rev3,CTGGAGTTCAGACGTGTGCTCTTCCGATCTgtccctattggcgttactatgggaacatacgtc,1st round primers for amplifying amplicon containing barcode for Illumina sequencing
+Illumina_RND2_For_Example,CAAGCAGAAGACGGCATACGAGATtatcttcagcGTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT,Example of 2nd round indexing primer (i7) used prior to Illumina sequencing. Lower case letters are specific index.
+Illumina_RND2_Rev_Example,AATGATACGGCGACCACCGAGATCTACACccaatattcgACACTCTTTCCCTACACGACGCTCTTCCGATCT,Example of 2nd round indexing primer (i5) used prior to Illumina sequencing. Lower case letters are specific index.

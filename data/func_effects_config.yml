@@ -1,0 +1,216 @@
+# Configurations for determining functional effects of mutations
+
+# --------------------------------------------------------------------------------------
+# Configuration for computing functional scores and fitting global epistasis models
+# to each individual selection experiment
+# --------------------------------------------------------------------------------------
+
+# Define default parameters for computing functional scores.
+# Can be provided to individual selections using the alias operator (*)
+func_scores_params_default: &func_scores_params_default
+  pseudocount: 0.5
+  # `min_wt_count` and `min_wt_frac` are designed to raise errors if selection experiment
+  # has excessively low wildtype counts (which will lead to inaccurate estimates).
+  min_wt_count: 1000  # error if not at least this many wildtype counts
+  min_wt_frac: 0.001  # error if not at least this fraction of counts for wildtype
+  # `min_pre_selection_count` and `min_pre_selection_frac` drop variants with low counts
+  # or frequencies that may not have sufficient statistics for good estimates.
+  min_pre_selection_count: 25  # drop variants < this many pre-selection counts
+  # !!! Make min_pre_selection_frac LARGER for larger libraries, such 0.1 / (library size) !!!
+  min_pre_selection_frac: 0.000002  # drop variants that are < this fraction of all counts 
+
+# Define default parameters for fitting global epistasis models to each
+# individual selection to get mutationo effects.
+global_epistasis_params: &global_epistasis_params
+  # How to clip functional scores at upper / lower bounds. Allowable values:
+  #  - median_stop: median func score of all variants with stop codons
+  #  - null: no clipping
+  #  - a number: clip at this number
+  clip_lower: median_stop
+  clip_upper: null
+  # Do we collapse barcodes with same variant?
+  collapse_identical_variants: false  # {false, mean, median}
+  # Regularization (ridge or L2) on the inferred latent effects, see
+  # https://github.com/matsengrp/multidms/issues/168#issuecomment-2643522165
+  # We recommend using a small value, like 1e-7.
+  latent_effects_regularization: 1e-7
+
+# Define how to compute functional scores. Each key is a selection experiment.
+# A global epistasis model is used to get mutational effects for each selection.
+# Recommended naming of selection experiments is:
+#   <library>-<post-selection sample date as YYMMDD>-<description>-<replicate>
+# Each selection experiment should in turn provide the following keys:
+#  - `post_selection_sample`: sample after selection (eg, infection of cells)
+#  - `pre_selection_sample`: sample pre selection (eg, initial variant frequencies)
+#  - `func_score_params`: parameters for computing functional scores
+#  - `global_epistasis_params`: parameters for fitting global epistasis model
+
+func_scores:
+  # ------------------ CHO-bEFNB2 -------------------------------
+  # ------ LibA ------
+  LibA-250311-CHO-bEFNB2-1: 
+    pre_selection_sample: LibA-250326-NipahF-CHO-VSV-1 #250311-LibA-33hpt-proteinCol
+    post_selection_sample: LibA-250514-NipahF-CHO-bEFNB2-1 #LibA-250312-ProteinCol
+    func_score_params: *func_scores_params_default 
+    global_epistasis_params: *global_epistasis_params
+  LibA-250409-CHO-bEFNB2-1: 
+    pre_selection_sample: LibA-250429-NipahF-VSV-CHO-1  #LibA-250409-VSV-ProteinCol
+    post_selection_sample: LibA-250429-NipahF-CHO-bEFNB2-1 #LibA-250409-F-ProteinCol
+    func_score_params: *func_scores_params_default 
+    global_epistasis_params: *global_epistasis_params
+  LibA-250409-CHO-bEFNB2-2: 
+    pre_selection_sample: LibA-250429-NipahF-VSV-CHO-2 #LibA-250409-VSV/RBP-ProteinCol
+    post_selection_sample: LibA-250514-NipahF-CHO-bEFNB2-2 #LibA-250409-ProteinCol
+    func_score_params: *func_scores_params_default 
+    global_epistasis_params: *global_epistasis_params
+  # ------ LibB ------
+  LibB-250428-CHO-bEFNB2-1: 
+    pre_selection_sample: LibB-250514-NipahF-VSV-CHO-2 #LibB-VSV-250428-ProteinCol
+    post_selection_sample: LibB-250514-NipahF-CHO-bEFNB2-2 #LibB-250428-ProteinCol
+    func_score_params: *func_scores_params_default 
+    global_epistasis_params: *global_epistasis_params
+  LibB-250428-CHO-bEFNB2-2: 
+    pre_selection_sample: LibB-250514-NipahF-VSV-CHO-1 #LibB-VSV-250428-ProteinCol
+    post_selection_sample: LibB-250514-NipahF-CHO-bEFNB2-3 #LibB-250428-ProteinCol
+    func_score_params: *func_scores_params_default 
+    global_epistasis_params: *global_epistasis_params
+  LibB-250428-CHO-bEFNB2-3: 
+    pre_selection_sample: LibB-250514-NipahF-VSV-CHO-2 #LibB-VSV-250428-ProteinCol
+    post_selection_sample: LibB-250514-NipahF-CHO-bEFNB2-4 #LibB-250428-ProteinCol
+    func_score_params: *func_scores_params_default 
+    global_epistasis_params: *global_epistasis_params
+
+  # ------------------ CHO-bEFNB3 -------------------------------
+  # ------ LibA ------
+  LibA-250311-CHO-bEFNB3-1: 
+    pre_selection_sample: LibA-250326-NipahF-CHO-VSV-1 #250311-LibA-F-VSV-ProteinCol-33hpt
+    post_selection_sample: LibA-250326-NipahF-CHO-bEFNB3-1 #250311-LibA-F-ProteinCol-48hpt
+    func_score_params: *func_scores_params_default 
+    global_epistasis_params: *global_epistasis_params
+  LibA-250311-CHO-bEFNB3-2: 
+    pre_selection_sample: LibA-250408-NipahF-CHO-VSV-3 #250311-LibA-33hpt-proteinCol
+    post_selection_sample: LibA-250326-NipahF-CHO-bEFNB3-NAC #250311-LibA-F-ProteinCol-48hpt
+    func_score_params: *func_scores_params_default 
+    global_epistasis_params: *global_epistasis_params
+    
+  LibA-250409-CHO-bEFNB3-1: 
+    pre_selection_sample: LibA-250429-NipahF-VSV-CHO-1 #LibA-250409-VSV-ProteinCol
+    post_selection_sample: LibA-250429-NipahF-CHO-bEFNB3 #LibA-250409-F-ProteinCol
+    func_score_params: *func_scores_params_default 
+    global_epistasis_params: *global_epistasis_params
+  LibA-250409-CHO-bEFNB3-2: 
+    pre_selection_sample: LibA-250429-NipahF-VSV-CHO-2 #LibA-250409-VSV/RBP-ProteinCol
+    post_selection_sample: LibA-250429-NipahF-CHO-bEFNB3-NAC #LibA-250409-F-ProteinCol
+    func_score_params: *func_scores_params_default 
+    global_epistasis_params: *global_epistasis_params
+    
+  # ------ LibB ------
+  # 250303 LibB rescues
+  LibB-250303-CHO-bEFNB3-1: 
+    pre_selection_sample: LibB-250312-NipahF-CHO-VSV #250303-VSV-48hr-ProteinCol
+    post_selection_sample: LibB-250312-NipahF-CHO-bEFNB3 #250303-48hr-LentiX
+    func_score_params: *func_scores_params_default
+    global_epistasis_params: *global_epistasis_params
+  LibB-250303-CHO-bEFNB3-2: 
+    pre_selection_sample: LibB-250310-NipahF-VSV-CHO-48hr #250303-LibB-VSV-48hr-LentiX
+    post_selection_sample: LibB-250312-NipahF-CHO-bEFNB3-NAC #250303-48hr-LentiX
+    func_score_params: *func_scores_params_default
+    global_epistasis_params: *global_epistasis_params
+
+  LibB-250414-CHO-bEFNB3-1: 
+    pre_selection_sample: LibB-250429-NipahF-VSV-CHO-1 #LibB-250414-VSV-LentiX
+    post_selection_sample: LibB-250429-NipahF-CHO-bEFNB3 #LibB-250414-F-LentiX
+    func_score_params: *func_scores_params_default 
+    global_epistasis_params: *global_epistasis_params
+  LibB-250414-CHO-bEFNB3-2: 
+    pre_selection_sample: LibB-250429-NipahF-VSV-CHO-2 #LibB-250414-VSV-LentiX
+    post_selection_sample: LibB-250429-NipahF-CHO-bEFNB3-NAC #LibB-250414-F-LentiX
+    func_score_params: *func_scores_params_default 
+    global_epistasis_params: *global_epistasis_params
+
+
+# --------------------------------------------------------------------------------------
+# Configuration for averaging mutation functional effects across selections and plotting
+# them.
+# --------------------------------------------------------------------------------------
+
+# Average/plot mutation functional effects from different selections w `avg_func_effects`
+# Each key is a condition which has the following values:
+#  - `selections`: list of selections for which we average mutation functional effects
+#  - `avg_method`: how to average across the selections, options are "median" and "mean"
+#  - `per_selection_tooltips`: whether to show per-selection effects via tooltips
+#  - `plot_kwargs`: keyword arguments passed to `polyclonal.plot.lineplot_and_heatmap`
+#  - `title`: title of plot. Will be suffixed with "(latent phenotype)" or ("functional score)"
+#  - `legend`: legend added to plot
+
+# Define some defaults for each condition, used via the merge (<<) operator.
+avg_func_effects_default: &avg_func_effects_default
+  avg_method: mean
+  floor_for_effect_std: -2.5
+  per_selection_tooltips: true
+  plot_kwargs:
+    alphabet: ['R','K','H','D','E','Q','N','S','T','Y','W','F','A','I','L','M','V','G','P','C'] #"'*'"
+    addtl_slider_stats:
+      times_seen: 2
+      effect_std: 1
+    addtl_slider_stats_as_max: [effect_std]
+    heatmap_min_fixed: -4
+    heatmap_max_fixed: 2
+    init_floor_at_zero: false
+    init_site_statistic: mean
+    site_zoom_bar_color_col: region  # supplied in the `site_numbering_map`
+    heatmap_color_scheme: redblue
+    slider_binding_range_kwargs:
+      times_seen:
+        step: 1
+        min: 1
+        max: 25
+      n_selections:
+        step: 1
+  legend: |
+    Interactive plot of the effects of mutations. Negative values indicated deleterious mutations,
+    positive values indicate beneficial mutations for the measured phenotype.
+
+    Use the site zoom bar at the top to zoom in on specific sites. The line plot shows a summary
+    statistic indicating the effects of mutations at each site. The heat map shows the effects of
+    individual mutations, with parental amino-acid identities indicated by x and gray
+    indicating non-measured mutations.
+
+    You can mouse over points to get details about individual measurements, include measurements
+    in individual selection experiments.
+
+    The options at the bottom of the plot let you modify the display, such as by selecting how
+    many different variants a mutation must be seen in to be shown (*minimum times_seen*),
+    how many different experimental selections the mutation was measured in
+    (*minimum n_selections*), what site summary statistic to show, etc.
+
+    The *minimum max of effect* at site is useful to select the sites where mutations have
+    the most positive functional effects.
+
+# Define the functional effect conditions to average
+avg_func_effects:
+  Nipah-F-CHO-bEFNB2:
+    <<: *avg_func_effects_default
+    title: Mean mutation effects on entry into CHO cells expressing bat EFNB2
+    selections:
+    #LibraryA
+      - LibA-250311-CHO-bEFNB2-1 
+      - LibA-250409-CHO-bEFNB2-1 
+    #LibraryB
+      - LibB-250428-CHO-bEFNB2-1 
+      - LibB-250428-CHO-bEFNB2-2 
+
+  Nipah-F-CHO-bEFNB3:
+    <<: *avg_func_effects_default
+    title: Mean mutation effects on entry into CHO cells expressing bat EFNB3
+    selections:
+    #LibraryA
+      - LibA-250311-CHO-bEFNB3-1 
+      - LibA-250311-CHO-bEFNB3-2 
+      - LibA-250409-CHO-bEFNB3-1 
+      - LibA-250409-CHO-bEFNB3-2
+    #LibraryB
+      - LibB-250303-CHO-bEFNB3-1 
+      - LibB-250303-CHO-bEFNB3-2 
+      - LibB-250414-CHO-bEFNB3-1 
+      - LibB-250414-CHO-bEFNB3-2 

@@ -1,0 +1,17 @@
+antibodies: ["12B2", "2D3", "4H3", "1A9", "1F2", "2B12"]
+
+# antibody escape filtering parameters
+times_seen_ab: 2 #min number of times a mutation must be found in different barcoded variants
+min_func_effect: -2.5 #for antibody selections, good idea to filter out super deleterious variants that are unlikely to be able to enter cells 
+escape_std_dev: 2 #std dev for antibody selection
+
+# cell entry filtering parameters
+times_seen_entry: 2 #min number of times a mutation must be found in different barcoded variants
+entry_std_dev: 1 #std dev for entry selection
+
+# logo plot parameters
+max_escape_frac: 0.5 #for a site to be included, it must be within this fraction of the max escape OR
+sum_escape_frac: 0.75 #site must be within this fraction of the site with highest summed escape
+
+# antibody interface parameters
+min_distance_interface: 5

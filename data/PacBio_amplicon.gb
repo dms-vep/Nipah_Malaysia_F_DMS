@@ -1,0 +1,49 @@
+LOCUS       PacBio_amplicon        1754 bp    DNA     linear   UNA 20-AUG-2024
+DEFINITION  Nipah Malaysia F amplicon after PCR
+ACCESSION   
+VERSION     
+KEYWORDS    .
+SOURCE      
+  ORGANISM  virus_PCR
+FEATURES             Location/Qualifiers
+     termini5        1..41
+     variant_tag5    27..27
+     gene_flank5     42..125
+     gene            126..1484
+     gene_flank3     1485..1616
+     barcode         1668..1683
+     termini3        1684..1754
+     variant_tag3    1710..1710
+     
+ORIGIN      
+        1 tagccattca gaggcagccg agccacatcg ctcaagccac catggtggtc atcctggaca
+       61 agcggtgcta ctgcaacctg ctgatcctga ttctgatgat cagcgagtgc agcgtgggca
+      121 tcctgcacta cgagaagctg agcaagatcg gcctggtcaa gggcgtgacc cggaagtaca
+      181 agatcaagag caaccctctg accaaggaca tcgtgatcaa gatgatcccc aacgtgtcca
+      241 acatgagcca gtgcaccggc agcgtgatgg aaaactacaa gacccggctg aacggcatcc
+      301 tgacacctat caaaggcgcc ctcgagatct acaagaacaa cacccacgac ctcgtgggcg
+      361 acgttcgact ggctggtgtt attatggccg gcgtggccat cggaattgcc acagccgctc
+      421 aaattacagc tggcgtggcc ctgtacgagg ccatgaagaa cgccgacaac atcaacaagc
+      481 tgaagtccag catcgagagc accaacgagg ccgtggtcaa gctgcaagag acagccgaga
+      541 aaaccgtgta cgtgctgaca gccctgcagg actacatcaa caccaacctg gtgcctacca
+      601 tcgacaagat ctcttgcaag cagaccgagc tgagcctgga tctggccctg agcaagtacc
+      661 tgagcgacct gctgttcgtg ttcggcccca atctgcagga ccccgtgtcc aatagcatga
+      721 ccatccaggc catcagccag gccttcggcg gcaattatga gacactgctg agaaccctgg
+      781 gctacgccac cgaggacttc gacgatctgc tggaaagcga cagcatcacc ggccagatca
+      841 tctacgtgga cctgagcagc tactacatca tcgtgcgggt gtacttcccc atcctgaccg
+      901 agatccagca ggcctacatc caagagctgc tgcccgtgtc cttcaacaac gacaacagcg
+      961 agtggatcag catcgtgccc aacttcatcc tcgtgcggaa caccctgatc agcaatatcg
+     1021 agatcggctt ctgcctgatc accaagcgga gcgtgatctg caaccaggac tacgccacac
+     1081 ctatgaccaa caacatgaga gagtgcctga ccggcagcac cgagaagtgc cctagagaac
+     1141 tggtggtgtc cagccacgtg ccaagattcg ccctgtctaa cggcgtgctg ttcgccaact
+     1201 gtatcagcgt gacctgccag tgccagacca caggcagagc catttctcag agcggcgaac
+     1261 agaccctgct gatgatcgac aacaccacct gtccaacagc cgtgctgggc aacgtgatca
+     1321 tctctctggg caagtatctg ggctccgtga actacaactc cgagggaatc gccatcggac
+     1381 ctccagtgtt caccgacaag gtggacatca gcagccagat cagcagcatg aaccagagcc
+     1441 tgcagcagag caaggattac atcaaagagg cccagcggct gctggacaca gtgaacccta
+     1501 gcctgatctc catgctgtcc atgatcatcc tgtacgtcct gtctatcgcc agcctgtgca
+     1561 tcggactgat caccttcatc agcttcatca tcgtcgagaa gaagcgcaac acctaaggcg
+     1621 cgcctagttg gatcacactc tttccctaca cgacgctctt ccgatctnnn nnnnnnnnnn
+     1681 nnntctagat tcgagagaga aatgttccta gtggagttcc gcgttacata acttacggct
+     1741 cgtactggtt gagc
+//

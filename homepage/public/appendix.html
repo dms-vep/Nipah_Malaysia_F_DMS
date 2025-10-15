@@ -1,0 +1,379 @@
+<h1 id="deep-mutational-scanning-of-the-nipah-virus-fusion-protein-using-a-barcoded-lentiviral-vector">Deep mutational scanning of the Nipah virus fusion protein using a barcoded lentiviral vector</h1>
+<p>Analysis by Brendan Larsen and Jesse Bloom (2025)</p>
+<p>See <a href="https://github.com/dms-vep/Nipah_Malaysia_F_DMS">https://github.com/dms-vep/Nipah_Malaysia_F_DMS</a> for full code.</p>
+<div class="toc"><span class="toctitle">Contents</span><ul>
+<li><a href="#barcode-to-codon-variant-lookup-table">Barcode to codon-variant lookup table</a></li>
+<li><a href="#count-barcodes-for-variants">Count barcodes for variants</a></li>
+<li><a href="#functional-effects-of-mutations">Functional effects of mutations</a></li>
+<li><a href="#antibodyserum-escape">Antibody/serum escape</a></li>
+</ul>
+</div>
+<h2 id="barcode-to-codon-variant-lookup-table">Barcode to codon-variant lookup table</h2>
+<h4 id="analysis-notebooks">Analysis notebooks</h4>
+<ul>
+<li><a href="notebooks/analyze_pacbio_ccs.html">Analysis of PacBio CCSs</a></li>
+<li><a href="notebooks/build_pacbio_consensus.html">Building barcoded variant consensus sequences</a></li>
+<li><a href="notebooks/build_codon_variants.html">Building of codon-variant table</a></li>
+</ul>
+<h4 id="data-files">Data files</h4>
+<ul>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/gene_sequence/codon.fasta">parental codon sequence</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/gene_sequence/protein.fasta">parental protein sequence</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/variants/codon_variants.csv">barcode to codon-variant lookup table</a></li>
+</ul>
+<h2 id="count-barcodes-for-variants">Count barcodes for variants</h2>
+<h4 id="analysis-notebooks_1">Analysis notebooks</h4>
+<ul>
+<li><a href="notebooks/analyze_variant_counts.html">Analysis of variant counts</a></li>
+</ul>
+<h4 id="data-files_1">Data files</h4>
+<ul>
+<li><details><summary>Barcode count CSVs (click triangle to expand/collapse)</summary><ul>
+
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/barcode_counts/LibA-250211-F-VSV-CHO-10cm_counts.csv">LibA-250211-F-VSV-CHO-10cm</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/barcode_counts/LibA-250211-F-VSV-CHO_counts.csv">LibA-250211-F-VSV-CHO</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/barcode_counts/LibA-250211-F-CHO-bEFNB3_counts.csv">LibA-250211-F-CHO-bEFNB3</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/barcode_counts/LibB-250211-F-VSV-CHO-10cm_counts.csv">LibB-250211-F-VSV-CHO-10cm</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/barcode_counts/LibB-250211-F-VSV-CHO_counts.csv">LibB-250211-F-VSV-CHO</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/barcode_counts/LibB-250211-F-CHO-bEFNB3_counts.csv">LibB-250211-F-CHO-bEFNB3</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/barcode_counts/LibB-250310-F-VSV-CHO-24hr_counts.csv">LibB-250310-F-VSV-CHO-24hr</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/barcode_counts/LibB-250310-F-VSV-CHO-48hr_counts.csv">LibB-250310-F-VSV-CHO-48hr</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/barcode_counts/LibA-250310-F-CHO-bEFNB3-NAC_counts.csv">LibA-250310-F-CHO-bEFNB3-NAC</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/barcode_counts/LibA-250310-F-CHO-bEFNB3-4H3-5000_counts.csv">LibA-250310-F-CHO-bEFNB3-4H3-5000</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/barcode_counts/LibA-250310-F-CHO-bEFNB3-4H3-1000_counts.csv">LibA-250310-F-CHO-bEFNB3-4H3-1000</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/barcode_counts/LibA-250310-F-CHO-bEFNB3-1A9-5000_counts.csv">LibA-250310-F-CHO-bEFNB3-1A9-5000</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/barcode_counts/LibA-250310-F-CHO-bEFNB3-1A9-1000_counts.csv">LibA-250310-F-CHO-bEFNB3-1A9-1000</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/barcode_counts/LibA-250310-F-CHO-bEFNB3-1F2-5000_counts.csv">LibA-250310-F-CHO-bEFNB3-1F2-5000</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/barcode_counts/LibA-250310-F-CHO-bEFNB3-1F2-1000_counts.csv">LibA-250310-F-CHO-bEFNB3-1F2-1000</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/barcode_counts/LibA-250310-F-CHO-bEFNB3-2B12-5000_counts.csv">LibA-250310-F-CHO-bEFNB3-2B12-5000</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/barcode_counts/LibA-250310-F-CHO-bEFNB3-2B12-1000_counts.csv">LibA-250310-F-CHO-bEFNB3-2B12-1000</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/barcode_counts/LibB-250312-F-CHO-VSV_counts.csv">LibB-250312-F-CHO-VSV</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/barcode_counts/LibB-250312-F-CHO-bEFNB3_counts.csv">LibB-250312-F-CHO-bEFNB3</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/barcode_counts/LibB-250312-F-CHO-bEFNB3-NAC_counts.csv">LibB-250312-F-CHO-bEFNB3-NAC</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/barcode_counts/LibB-250312-F-CHO-bEFNB3-1A9-4000_counts.csv">LibB-250312-F-CHO-bEFNB3-1A9-4000</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/barcode_counts/LibB-250312-F-CHO-bEFNB3-1A9-1000_counts.csv">LibB-250312-F-CHO-bEFNB3-1A9-1000</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/barcode_counts/LibB-250312-F-CHO-bEFNB3-1A9-200_counts.csv">LibB-250312-F-CHO-bEFNB3-1A9-200</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/barcode_counts/LibA-250325-F-CHO-bEFNB3-NAC_counts.csv">LibA-250325-F-CHO-bEFNB3-NAC</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/barcode_counts/LibA-250325-F-CHO-bEFNB3-4H3-400_counts.csv">LibA-250325-F-CHO-bEFNB3-4H3-400</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/barcode_counts/LibA-250325-F-CHO-bEFNB3-4H3-800_counts.csv">LibA-250325-F-CHO-bEFNB3-4H3-800</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/barcode_counts/LibA-250325-F-CHO-bEFNB3-4H3-1500_counts.csv">LibA-250325-F-CHO-bEFNB3-4H3-1500</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/barcode_counts/LibA-250325-F-CHO-bEFNB3-1F2-800_counts.csv">LibA-250325-F-CHO-bEFNB3-1F2-800</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/barcode_counts/LibA-250325-F-CHO-bEFNB3-1F2-1500_counts.csv">LibA-250325-F-CHO-bEFNB3-1F2-1500</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/barcode_counts/LibA-250325-F-CHO-bEFNB3-1F2-500_counts.csv">LibA-250325-F-CHO-bEFNB3-1F2-500</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/barcode_counts/LibA-250325-F-CHO-bEFNB3-2B12-1000_counts.csv">LibA-250325-F-CHO-bEFNB3-2B12-1000</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/barcode_counts/LibA-250325-F-CHO-bEFNB3-2B12-2500_counts.csv">LibA-250325-F-CHO-bEFNB3-2B12-2500</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/barcode_counts/LibA-250326-F-CHO-VSV-1_counts.csv">LibA-250326-F-CHO-VSV-1</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/barcode_counts/LibA-250326-F-CHO-VSV-2_counts.csv">LibA-250326-F-CHO-VSV-2</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/barcode_counts/LibA-250326-F-CHO-bEFNB3-1_counts.csv">LibA-250326-F-CHO-bEFNB3-1</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/barcode_counts/LibA-250326-F-CHO-bEFNB3-2_counts.csv">LibA-250326-F-CHO-bEFNB3-2</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/barcode_counts/LibA-250326-F-CHO-bEFNB3-NAC_counts.csv">LibA-250326-F-CHO-bEFNB3-NAC</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/barcode_counts/LibA-250326-F-CHO-bEFNB3-1A9-300_counts.csv">LibA-250326-F-CHO-bEFNB3-1A9-300</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/barcode_counts/LibA-250326-F-CHO-bEFNB3-1A9-1000_counts.csv">LibA-250326-F-CHO-bEFNB3-1A9-1000</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/barcode_counts/LibA-250326-F-CHO-bEFNB3-1A9-2000_counts.csv">LibA-250326-F-CHO-bEFNB3-1A9-2000</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/barcode_counts/LibA-250326-F-CHO-bEFNB3-2D3-400_counts.csv">LibA-250326-F-CHO-bEFNB3-2D3-400</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/barcode_counts/LibA-250326-F-CHO-bEFNB3-2D3-1000_counts.csv">LibA-250326-F-CHO-bEFNB3-2D3-1000</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/barcode_counts/LibA-250326-F-CHO-bEFNB3-2D3-2000_counts.csv">LibA-250326-F-CHO-bEFNB3-2D3-2000</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/barcode_counts/LibA-250408-F-CHO-VSV-1_counts.csv">LibA-250408-F-CHO-VSV-1</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/barcode_counts/LibA-250408-F-CHO-VSV-2_counts.csv">LibA-250408-F-CHO-VSV-2</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/barcode_counts/LibA-250408-F-CHO-VSV-3_counts.csv">LibA-250408-F-CHO-VSV-3</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/barcode_counts/LibB-250408-F-CHO-VSV-1_counts.csv">LibB-250408-F-CHO-VSV-1</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/barcode_counts/LibB-250408-F-CHO-VSV-2_counts.csv">LibB-250408-F-CHO-VSV-2</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/barcode_counts/LibA-250408-F-CHO-bEFNB2-1_counts.csv">LibA-250408-F-CHO-bEFNB2-1</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/barcode_counts/LibA-250408-F-CHO-bEFNB3-1_counts.csv">LibA-250408-F-CHO-bEFNB3-1</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/barcode_counts/LibB-250408-F-CHO-bEFNB3-1_counts.csv">LibB-250408-F-CHO-bEFNB3-1</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/barcode_counts/LibA-250408-F-CHO-VSV1-2nd-diluted_counts.csv">LibA-250408-F-CHO-VSV1-2nd-diluted</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/barcode_counts/LibB-250408-F-CHO-VSV1-2nd-diluted_counts.csv">LibB-250408-F-CHO-VSV1-2nd-diluted</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/barcode_counts/LibB-250411-NipahF-CHO-bEFNB3-NAC_counts.csv">LibB-250411-NipahF-CHO-bEFNB3-NAC</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/barcode_counts/LibB-250411-NipahF-CHO-bEFNB3-4H3-400_counts.csv">LibB-250411-NipahF-CHO-bEFNB3-4H3-400</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/barcode_counts/LibB-250411-NipahF-CHO-bEFNB3-4H3-1100_counts.csv">LibB-250411-NipahF-CHO-bEFNB3-4H3-1100</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/barcode_counts/LibB-250411-NipahF-CHO-bEFNB3-2D3-500_counts.csv">LibB-250411-NipahF-CHO-bEFNB3-2D3-500</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/barcode_counts/LibB-250411-NipahF-CHO-bEFNB3-2D3-1100_counts.csv">LibB-250411-NipahF-CHO-bEFNB3-2D3-1100</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/barcode_counts/LibB-250411-NipahF-CHO-bEFNB3-1A9-700_counts.csv">LibB-250411-NipahF-CHO-bEFNB3-1A9-700</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/barcode_counts/LibB-250411-NipahF-CHO-bEFNB3-1F2-450_counts.csv">LibB-250411-NipahF-CHO-bEFNB3-1F2-450</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/barcode_counts/LibB-250411-NipahF-CHO-bEFNB3-1F2-1200_counts.csv">LibB-250411-NipahF-CHO-bEFNB3-1F2-1200</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/barcode_counts/LibB-250411-NipahF-CHO-bEFNB3-2B12-1500_counts.csv">LibB-250411-NipahF-CHO-bEFNB3-2B12-1500</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/barcode_counts/LibB-250411-NipahF-CHO-bEFNB3-2B12-4000_counts.csv">LibB-250411-NipahF-CHO-bEFNB3-2B12-4000</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/barcode_counts/LibA-250415-NipahF-CHO-bEFNB3-NAC_counts.csv">LibA-250415-NipahF-CHO-bEFNB3-NAC</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/barcode_counts/LibA-250415-NipahF-CHO-bEFNB3-12B2-200_counts.csv">LibA-250415-NipahF-CHO-bEFNB3-12B2-200</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/barcode_counts/LibA-250415-NipahF-CHO-bEFNB3-12B2-500_counts.csv">LibA-250415-NipahF-CHO-bEFNB3-12B2-500</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/barcode_counts/LibA-250415-NipahF-CHO-bEFNB3-12B2-1000_counts.csv">LibA-250415-NipahF-CHO-bEFNB3-12B2-1000</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/barcode_counts/LibA-250415-NipahF-CHO-bEFNB3-12B2-2000_counts.csv">LibA-250415-NipahF-CHO-bEFNB3-12B2-2000</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/barcode_counts/LibA-250415-NipahF-CHO-bEFNB3-12B2-4000_counts.csv">LibA-250415-NipahF-CHO-bEFNB3-12B2-4000</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/barcode_counts/LibB-250415-NipahF-CHO-bEFNB3-NAC_counts.csv">LibB-250415-NipahF-CHO-bEFNB3-NAC</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/barcode_counts/LibB-250415-NipahF-CHO-bEFNB3-12B2-200_counts.csv">LibB-250415-NipahF-CHO-bEFNB3-12B2-200</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/barcode_counts/LibB-250415-NipahF-CHO-bEFNB3-12B2-500_counts.csv">LibB-250415-NipahF-CHO-bEFNB3-12B2-500</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/barcode_counts/LibB-250415-NipahF-CHO-bEFNB3-12B2-1000_counts.csv">LibB-250415-NipahF-CHO-bEFNB3-12B2-1000</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/barcode_counts/LibB-250415-NipahF-CHO-bEFNB3-12B2-2000_counts.csv">LibB-250415-NipahF-CHO-bEFNB3-12B2-2000</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/barcode_counts/LibB-250415-NipahF-CHO-bEFNB3-12B2-4000_counts.csv">LibB-250415-NipahF-CHO-bEFNB3-12B2-4000</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/barcode_counts/LibA-250429-NipahF-VSV-CHO-1_counts.csv">LibA-250429-NipahF-VSV-CHO-1</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/barcode_counts/LibA-250429-NipahF-VSV-CHO-2_counts.csv">LibA-250429-NipahF-VSV-CHO-2</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/barcode_counts/LibB-250429-NipahF-VSV-CHO-1_counts.csv">LibB-250429-NipahF-VSV-CHO-1</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/barcode_counts/LibB-250429-NipahF-VSV-CHO-2_counts.csv">LibB-250429-NipahF-VSV-CHO-2</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/barcode_counts/LibA-250429-NipahF-CHO-bEFNB2-1_counts.csv">LibA-250429-NipahF-CHO-bEFNB2-1</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/barcode_counts/LibA-250429-NipahF-CHO-bEFNB2-2_counts.csv">LibA-250429-NipahF-CHO-bEFNB2-2</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/barcode_counts/LibB-250429-NipahF-CHO-bEFNB2-1_counts.csv">LibB-250429-NipahF-CHO-bEFNB2-1</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/barcode_counts/LibB-250429-NipahF-CHO-bEFNB2-2_counts.csv">LibB-250429-NipahF-CHO-bEFNB2-2</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/barcode_counts/LibA-250429-NipahF-CHO-bEFNB3_counts.csv">LibA-250429-NipahF-CHO-bEFNB3</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/barcode_counts/LibB-250429-NipahF-CHO-bEFNB3_counts.csv">LibB-250429-NipahF-CHO-bEFNB3</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/barcode_counts/LibA-250429-NipahF-CHO-bEFNB3-NAC_counts.csv">LibA-250429-NipahF-CHO-bEFNB3-NAC</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/barcode_counts/LibA-250429-NipahF-CHO-bEFNB3-1F2-500_counts.csv">LibA-250429-NipahF-CHO-bEFNB3-1F2-500</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/barcode_counts/LibA-250429-NipahF-CHO-bEFNB3-1F2-1100_counts.csv">LibA-250429-NipahF-CHO-bEFNB3-1F2-1100</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/barcode_counts/LibA-250429-NipahF-CHO-bEFNB3-1F2-1500_counts.csv">LibA-250429-NipahF-CHO-bEFNB3-1F2-1500</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/barcode_counts/LibB-250429-NipahF-CHO-bEFNB3-NAC_counts.csv">LibB-250429-NipahF-CHO-bEFNB3-NAC</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/barcode_counts/LibB-250429-NipahF-CHO-bEFNB3-1F2-500_counts.csv">LibB-250429-NipahF-CHO-bEFNB3-1F2-500</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/barcode_counts/LibB-250429-NipahF-CHO-bEFNB3-1F2-1100_counts.csv">LibB-250429-NipahF-CHO-bEFNB3-1F2-1100</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/barcode_counts/LibB-250429-NipahF-CHO-bEFNB3-1F2-1500_counts.csv">LibB-250429-NipahF-CHO-bEFNB3-1F2-1500</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/barcode_counts/LibA-250514-NipahF-CHO-bEFNB2-1_counts.csv">LibA-250514-NipahF-CHO-bEFNB2-1</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/barcode_counts/LibA-250514-NipahF-CHO-bEFNB2-2_counts.csv">LibA-250514-NipahF-CHO-bEFNB2-2</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/barcode_counts/LibB-250514-NipahF-CHO-bEFNB2-1_counts.csv">LibB-250514-NipahF-CHO-bEFNB2-1</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/barcode_counts/LibB-250514-NipahF-CHO-bEFNB2-2_counts.csv">LibB-250514-NipahF-CHO-bEFNB2-2</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/barcode_counts/LibB-250514-NipahF-VSV-CHO-1_counts.csv">LibB-250514-NipahF-VSV-CHO-1</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/barcode_counts/LibB-250514-NipahF-VSV-CHO-2_counts.csv">LibB-250514-NipahF-VSV-CHO-2</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/barcode_counts/LibB-250514-NipahF-CHO-bEFNB2-3_counts.csv">LibB-250514-NipahF-CHO-bEFNB2-3</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/barcode_counts/LibB-250514-NipahF-CHO-bEFNB2-4_counts.csv">LibB-250514-NipahF-CHO-bEFNB2-4</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/barcode_counts/LibA-250605-NipahF-CHO-bEFNB3-NAC_counts.csv">LibA-250605-NipahF-CHO-bEFNB3-NAC</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/barcode_counts/LibA-250605-NipahF-CHO-bEFNB3-1F2-700_counts.csv">LibA-250605-NipahF-CHO-bEFNB3-1F2-700</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/barcode_counts/LibA-250605-NipahF-CHO-bEFNB3-1F2-1600_counts.csv">LibA-250605-NipahF-CHO-bEFNB3-1F2-1600</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/barcode_counts/LibA-250605-NipahF-CHO-bEFNB3-1F2-2300_counts.csv">LibA-250605-NipahF-CHO-bEFNB3-1F2-2300</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/barcode_counts/LibA-250605-NipahF-CHO-bEFNB3-1F2-4500_counts.csv">LibA-250605-NipahF-CHO-bEFNB3-1F2-4500</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/barcode_counts/LibB-250605-NipahF-CHO-bEFNB3-NAC_counts.csv">LibB-250605-NipahF-CHO-bEFNB3-NAC</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/barcode_counts/LibB-250605-NipahF-CHO-bEFNB3-1F2-700_counts.csv">LibB-250605-NipahF-CHO-bEFNB3-1F2-700</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/barcode_counts/LibB-250605-NipahF-CHO-bEFNB3-1F2-1600_counts.csv">LibB-250605-NipahF-CHO-bEFNB3-1F2-1600</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/barcode_counts/LibB-250605-NipahF-CHO-bEFNB3-1F2-2300_counts.csv">LibB-250605-NipahF-CHO-bEFNB3-1F2-2300</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/barcode_counts/LibB-250605-NipahF-CHO-bEFNB3-1F2-4500_counts.csv">LibB-250605-NipahF-CHO-bEFNB3-1F2-4500</a></li>
+</ul></details>
+
+</li>
+</ul>
+<h2 id="functional-effects-of-mutations">Functional effects of mutations</h2>
+<h4 id="final-summary-plots">Final summary plots</h4>
+<ul>
+<li><details><summary>Interactive plots of average mutation functional effects (click triangle to expand/collapse)</summary><ul>
+
+<li><a href="htmls/Nipah-F-CHO-bEFNB2_func_effects.html">Nipah-F-CHO-bEFNB2</a></li>
+<li><a href="htmls/Nipah-F-CHO-bEFNB3_func_effects.html">Nipah-F-CHO-bEFNB3</a></li>
+</ul></details>
+
+</li>
+<li><details><summary>Interactive plots of average mutation latent-phenotype effects (click triangle to expand/collapse)</summary><ul>
+
+<li><a href="htmls/Nipah-F-CHO-bEFNB2_latent_effects.html">Nipah-F-CHO-bEFNB2</a></li>
+<li><a href="htmls/Nipah-F-CHO-bEFNB3_latent_effects.html">Nipah-F-CHO-bEFNB3</a></li>
+</ul></details>
+
+</li>
+</ul>
+<h4 id="analysis-notebooks_2">Analysis notebooks</h4>
+<ul>
+<li><a href="notebooks/analyze_func_scores.html">Analysis of functional scores</a></li>
+<li><details><summary>Notebooks with per-selection global epistasis fitting (click triangle to expand/collapse)</summary><ul>
+
+<li><a href="notebooks/func_effects_global_epistasis_LibA-250311-CHO-bEFNB2-1.html">LibA-250311-CHO-bEFNB2-1</a></li>
+<li><a href="notebooks/func_effects_global_epistasis_LibA-250409-CHO-bEFNB2-1.html">LibA-250409-CHO-bEFNB2-1</a></li>
+<li><a href="notebooks/func_effects_global_epistasis_LibA-250409-CHO-bEFNB2-2.html">LibA-250409-CHO-bEFNB2-2</a></li>
+<li><a href="notebooks/func_effects_global_epistasis_LibB-250428-CHO-bEFNB2-1.html">LibB-250428-CHO-bEFNB2-1</a></li>
+<li><a href="notebooks/func_effects_global_epistasis_LibB-250428-CHO-bEFNB2-2.html">LibB-250428-CHO-bEFNB2-2</a></li>
+<li><a href="notebooks/func_effects_global_epistasis_LibB-250428-CHO-bEFNB2-3.html">LibB-250428-CHO-bEFNB2-3</a></li>
+<li><a href="notebooks/func_effects_global_epistasis_LibA-250311-CHO-bEFNB3-1.html">LibA-250311-CHO-bEFNB3-1</a></li>
+<li><a href="notebooks/func_effects_global_epistasis_LibA-250311-CHO-bEFNB3-2.html">LibA-250311-CHO-bEFNB3-2</a></li>
+<li><a href="notebooks/func_effects_global_epistasis_LibA-250409-CHO-bEFNB3-1.html">LibA-250409-CHO-bEFNB3-1</a></li>
+<li><a href="notebooks/func_effects_global_epistasis_LibA-250409-CHO-bEFNB3-2.html">LibA-250409-CHO-bEFNB3-2</a></li>
+<li><a href="notebooks/func_effects_global_epistasis_LibB-250303-CHO-bEFNB3-1.html">LibB-250303-CHO-bEFNB3-1</a></li>
+<li><a href="notebooks/func_effects_global_epistasis_LibB-250303-CHO-bEFNB3-2.html">LibB-250303-CHO-bEFNB3-2</a></li>
+<li><a href="notebooks/func_effects_global_epistasis_LibB-250414-CHO-bEFNB3-1.html">LibB-250414-CHO-bEFNB3-1</a></li>
+<li><a href="notebooks/func_effects_global_epistasis_LibB-250414-CHO-bEFNB3-2.html">LibB-250414-CHO-bEFNB3-2</a></li>
+</ul></details>
+
+</li>
+<li><details><summary>Notebooks averaging mutation functional effects (click triangle to expand/collapse)</summary><ul>
+
+<li><a href="notebooks/avg_func_effects_Nipah-F-CHO-bEFNB2.html">Nipah-F-CHO-bEFNB2</a></li>
+<li><a href="notebooks/avg_func_effects_Nipah-F-CHO-bEFNB3.html">Nipah-F-CHO-bEFNB3</a></li>
+</ul></details>
+
+</li>
+</ul>
+<h4 id="data-files_2">Data files</h4>
+<ul>
+<li><details><summary>Per-variant functional score CSVs (click triangle to expand/collapse)</summary><ul>
+
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/func_scores/LibA-250311-CHO-bEFNB2-1_func_scores.csv">LibA-250311-CHO-bEFNB2-1</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/func_scores/LibA-250409-CHO-bEFNB2-1_func_scores.csv">LibA-250409-CHO-bEFNB2-1</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/func_scores/LibA-250409-CHO-bEFNB2-2_func_scores.csv">LibA-250409-CHO-bEFNB2-2</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/func_scores/LibB-250428-CHO-bEFNB2-1_func_scores.csv">LibB-250428-CHO-bEFNB2-1</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/func_scores/LibB-250428-CHO-bEFNB2-2_func_scores.csv">LibB-250428-CHO-bEFNB2-2</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/func_scores/LibB-250428-CHO-bEFNB2-3_func_scores.csv">LibB-250428-CHO-bEFNB2-3</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/func_scores/LibA-250311-CHO-bEFNB3-1_func_scores.csv">LibA-250311-CHO-bEFNB3-1</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/func_scores/LibA-250311-CHO-bEFNB3-2_func_scores.csv">LibA-250311-CHO-bEFNB3-2</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/func_scores/LibA-250409-CHO-bEFNB3-1_func_scores.csv">LibA-250409-CHO-bEFNB3-1</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/func_scores/LibA-250409-CHO-bEFNB3-2_func_scores.csv">LibA-250409-CHO-bEFNB3-2</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/func_scores/LibB-250303-CHO-bEFNB3-1_func_scores.csv">LibB-250303-CHO-bEFNB3-1</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/func_scores/LibB-250303-CHO-bEFNB3-2_func_scores.csv">LibB-250303-CHO-bEFNB3-2</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/func_scores/LibB-250414-CHO-bEFNB3-1_func_scores.csv">LibB-250414-CHO-bEFNB3-1</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/func_scores/LibB-250414-CHO-bEFNB3-2_func_scores.csv">LibB-250414-CHO-bEFNB3-2</a></li>
+</ul></details>
+
+</li>
+<li><details><summary>Per-selection mutation functional effect CSVs (click triangle to expand/collapse)</summary><ul>
+
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/func_effects/by_selection/LibA-250311-CHO-bEFNB2-1_func_effects.csv">LibA-250311-CHO-bEFNB2-1</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/func_effects/by_selection/LibA-250409-CHO-bEFNB2-1_func_effects.csv">LibA-250409-CHO-bEFNB2-1</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/func_effects/by_selection/LibA-250409-CHO-bEFNB2-2_func_effects.csv">LibA-250409-CHO-bEFNB2-2</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/func_effects/by_selection/LibB-250428-CHO-bEFNB2-1_func_effects.csv">LibB-250428-CHO-bEFNB2-1</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/func_effects/by_selection/LibB-250428-CHO-bEFNB2-2_func_effects.csv">LibB-250428-CHO-bEFNB2-2</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/func_effects/by_selection/LibB-250428-CHO-bEFNB2-3_func_effects.csv">LibB-250428-CHO-bEFNB2-3</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/func_effects/by_selection/LibA-250311-CHO-bEFNB3-1_func_effects.csv">LibA-250311-CHO-bEFNB3-1</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/func_effects/by_selection/LibA-250311-CHO-bEFNB3-2_func_effects.csv">LibA-250311-CHO-bEFNB3-2</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/func_effects/by_selection/LibA-250409-CHO-bEFNB3-1_func_effects.csv">LibA-250409-CHO-bEFNB3-1</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/func_effects/by_selection/LibA-250409-CHO-bEFNB3-2_func_effects.csv">LibA-250409-CHO-bEFNB3-2</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/func_effects/by_selection/LibB-250303-CHO-bEFNB3-1_func_effects.csv">LibB-250303-CHO-bEFNB3-1</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/func_effects/by_selection/LibB-250303-CHO-bEFNB3-2_func_effects.csv">LibB-250303-CHO-bEFNB3-2</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/func_effects/by_selection/LibB-250414-CHO-bEFNB3-1_func_effects.csv">LibB-250414-CHO-bEFNB3-1</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/func_effects/by_selection/LibB-250414-CHO-bEFNB3-2_func_effects.csv">LibB-250414-CHO-bEFNB3-2</a></li>
+</ul></details>
+
+</li>
+<li><details><summary>Average mutation functional effects (CSV files) (click triangle to expand/collapse)</summary><ul>
+
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/func_effects/averages/Nipah-F-CHO-bEFNB2_func_effects.csv">Nipah-F-CHO-bEFNB2</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/func_effects/averages/Nipah-F-CHO-bEFNB3_func_effects.csv">Nipah-F-CHO-bEFNB3</a></li>
+</ul></details>
+
+</li>
+<li><details><summary>Average mutation latent-phenotype effects (CSV files) (click triangle to expand/collapse)</summary><ul>
+
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/func_effects/averages/Nipah-F-CHO-bEFNB2_func_effects.csv">Nipah-F-CHO-bEFNB2</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/func_effects/averages/Nipah-F-CHO-bEFNB3_func_effects.csv">Nipah-F-CHO-bEFNB3</a></li>
+</ul></details>
+
+</li>
+</ul>
+<h2 id="antibodyserum-escape">Antibody/serum escape</h2>
+<h4 id="final-summary-plots_1">Final summary plots</h4>
+<ul>
+<li><details><summary>antibody escape mutation effect plots (click triangle to expand/collapse)</summary><ul>
+
+<li><a href="htmls/4H3_mut_effect.html">4H3</a></li>
+<li><a href="htmls/2D3_mut_effect.html">2D3</a></li>
+<li><a href="htmls/12B2_mut_effect.html">12B2</a></li>
+<li><a href="htmls/1A9_mut_effect.html">1A9</a></li>
+<li><a href="htmls/1F2_mut_effect.html">1F2</a></li>
+<li><a href="htmls/2B12_mut_effect.html">2B12</a></li>
+</ul></details>
+
+</li>
+</ul>
+<h4 id="analysis-notebooks_3">Analysis notebooks</h4>
+<ul>
+<li><details><summary>Fits of polyclonal models to individual antibody escape selections (click triangle to expand/collapse)</summary><ul>
+
+<li><a href="notebooks/fit_escape_antibody_escape_LibA-250310-4H3.html">LibA-250310-4H3</a></li>
+<li><a href="notebooks/fit_escape_antibody_escape_LibA-250325-4H3.html">LibA-250325-4H3</a></li>
+<li><a href="notebooks/fit_escape_antibody_escape_LibB-250411-4H3.html">LibB-250411-4H3</a></li>
+<li><a href="notebooks/fit_escape_antibody_escape_LibA-250326-2D3.html">LibA-250326-2D3</a></li>
+<li><a href="notebooks/fit_escape_antibody_escape_LibB-250411-2D3.html">LibB-250411-2D3</a></li>
+<li><a href="notebooks/fit_escape_antibody_escape_LibA-250415-12B2.html">LibA-250415-12B2</a></li>
+<li><a href="notebooks/fit_escape_antibody_escape_LibB-250415-12B2.html">LibB-250415-12B2</a></li>
+<li><a href="notebooks/fit_escape_antibody_escape_LibA-250310-1A9.html">LibA-250310-1A9</a></li>
+<li><a href="notebooks/fit_escape_antibody_escape_LibA-250326-1A9.html">LibA-250326-1A9</a></li>
+<li><a href="notebooks/fit_escape_antibody_escape_LibB-250312-1A9.html">LibB-250312-1A9</a></li>
+<li><a href="notebooks/fit_escape_antibody_escape_LibB-250411-1A9.html">LibB-250411-1A9</a></li>
+<li><a href="notebooks/fit_escape_antibody_escape_LibA-250325-1F2.html">LibA-250325-1F2</a></li>
+<li><a href="notebooks/fit_escape_antibody_escape_LibA-250429-1F2.html">LibA-250429-1F2</a></li>
+<li><a href="notebooks/fit_escape_antibody_escape_LibA-250605-1F2.html">LibA-250605-1F2</a></li>
+<li><a href="notebooks/fit_escape_antibody_escape_LibB-250411-1F2.html">LibB-250411-1F2</a></li>
+<li><a href="notebooks/fit_escape_antibody_escape_LibB-250429-1F2.html">LibB-250429-1F2</a></li>
+<li><a href="notebooks/fit_escape_antibody_escape_LibB-250605-1F2.html">LibB-250605-1F2</a></li>
+<li><a href="notebooks/fit_escape_antibody_escape_LibA-250310-2B12.html">LibA-250310-2B12</a></li>
+<li><a href="notebooks/fit_escape_antibody_escape_LibA-250325-2B12.html">LibA-250325-2B12</a></li>
+<li><a href="notebooks/fit_escape_antibody_escape_LibB-250411-2B12.html">LibB-250411-2B12</a></li>
+</ul></details>
+
+</li>
+<li><details><summary>Average selections for antibody escape (click triangle to expand/collapse)</summary><ul>
+
+<li><a href="notebooks/avg_escape_antibody_escape_4H3.html">4H3</a></li>
+<li><a href="notebooks/avg_escape_antibody_escape_2D3.html">2D3</a></li>
+<li><a href="notebooks/avg_escape_antibody_escape_12B2.html">12B2</a></li>
+<li><a href="notebooks/avg_escape_antibody_escape_1A9.html">1A9</a></li>
+<li><a href="notebooks/avg_escape_antibody_escape_1F2.html">1F2</a></li>
+<li><a href="notebooks/avg_escape_antibody_escape_2B12.html">2B12</a></li>
+</ul></details>
+
+</li>
+</ul>
+<h4 id="data-files_3">Data files</h4>
+<ul>
+<li><details><summary>Probability (fraction) escape for each variant in each antibody escape selection (CSVs) (click triangle to expand/collapse)</summary><ul>
+
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/antibody_escape/by_selection/LibA-250310-4H3/LibA-250310-F-CHO-bEFNB3-4H3-1000_prob_escape.csv">LibA-250310-4H3 LibA-250310-F-CHO-bEFNB3-4H3-1000</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/antibody_escape/by_selection/LibA-250310-4H3/LibA-250310-F-CHO-bEFNB3-4H3-5000_prob_escape.csv">LibA-250310-4H3 LibA-250310-F-CHO-bEFNB3-4H3-5000</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/antibody_escape/by_selection/LibA-250325-4H3/LibA-250325-F-CHO-bEFNB3-4H3-400_prob_escape.csv">LibA-250325-4H3 LibA-250325-F-CHO-bEFNB3-4H3-400</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/antibody_escape/by_selection/LibA-250325-4H3/LibA-250325-F-CHO-bEFNB3-4H3-800_prob_escape.csv">LibA-250325-4H3 LibA-250325-F-CHO-bEFNB3-4H3-800</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/antibody_escape/by_selection/LibA-250325-4H3/LibA-250325-F-CHO-bEFNB3-4H3-1500_prob_escape.csv">LibA-250325-4H3 LibA-250325-F-CHO-bEFNB3-4H3-1500</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/antibody_escape/by_selection/LibB-250411-4H3/LibB-250411-NipahF-CHO-bEFNB3-4H3-400_prob_escape.csv">LibB-250411-4H3 LibB-250411-NipahF-CHO-bEFNB3-4H3-400</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/antibody_escape/by_selection/LibB-250411-4H3/LibB-250411-NipahF-CHO-bEFNB3-4H3-1100_prob_escape.csv">LibB-250411-4H3 LibB-250411-NipahF-CHO-bEFNB3-4H3-1100</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/antibody_escape/by_selection/LibA-250326-2D3/LibA-250326-F-CHO-bEFNB3-2D3-400_prob_escape.csv">LibA-250326-2D3 LibA-250326-F-CHO-bEFNB3-2D3-400</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/antibody_escape/by_selection/LibA-250326-2D3/LibA-250326-F-CHO-bEFNB3-2D3-1000_prob_escape.csv">LibA-250326-2D3 LibA-250326-F-CHO-bEFNB3-2D3-1000</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/antibody_escape/by_selection/LibA-250326-2D3/LibA-250326-F-CHO-bEFNB3-2D3-2000_prob_escape.csv">LibA-250326-2D3 LibA-250326-F-CHO-bEFNB3-2D3-2000</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/antibody_escape/by_selection/LibB-250411-2D3/LibB-250411-NipahF-CHO-bEFNB3-2D3-500_prob_escape.csv">LibB-250411-2D3 LibB-250411-NipahF-CHO-bEFNB3-2D3-500</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/antibody_escape/by_selection/LibB-250411-2D3/LibB-250411-NipahF-CHO-bEFNB3-2D3-1100_prob_escape.csv">LibB-250411-2D3 LibB-250411-NipahF-CHO-bEFNB3-2D3-1100</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/antibody_escape/by_selection/LibA-250415-12B2/LibA-250415-NipahF-CHO-bEFNB3-12B2-200_prob_escape.csv">LibA-250415-12B2 LibA-250415-NipahF-CHO-bEFNB3-12B2-200</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/antibody_escape/by_selection/LibA-250415-12B2/LibA-250415-NipahF-CHO-bEFNB3-12B2-500_prob_escape.csv">LibA-250415-12B2 LibA-250415-NipahF-CHO-bEFNB3-12B2-500</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/antibody_escape/by_selection/LibA-250415-12B2/LibA-250415-NipahF-CHO-bEFNB3-12B2-1000_prob_escape.csv">LibA-250415-12B2 LibA-250415-NipahF-CHO-bEFNB3-12B2-1000</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/antibody_escape/by_selection/LibA-250415-12B2/LibA-250415-NipahF-CHO-bEFNB3-12B2-2000_prob_escape.csv">LibA-250415-12B2 LibA-250415-NipahF-CHO-bEFNB3-12B2-2000</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/antibody_escape/by_selection/LibA-250415-12B2/LibA-250415-NipahF-CHO-bEFNB3-12B2-4000_prob_escape.csv">LibA-250415-12B2 LibA-250415-NipahF-CHO-bEFNB3-12B2-4000</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/antibody_escape/by_selection/LibB-250415-12B2/LibB-250415-NipahF-CHO-bEFNB3-12B2-200_prob_escape.csv">LibB-250415-12B2 LibB-250415-NipahF-CHO-bEFNB3-12B2-200</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/antibody_escape/by_selection/LibB-250415-12B2/LibB-250415-NipahF-CHO-bEFNB3-12B2-500_prob_escape.csv">LibB-250415-12B2 LibB-250415-NipahF-CHO-bEFNB3-12B2-500</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/antibody_escape/by_selection/LibB-250415-12B2/LibB-250415-NipahF-CHO-bEFNB3-12B2-1000_prob_escape.csv">LibB-250415-12B2 LibB-250415-NipahF-CHO-bEFNB3-12B2-1000</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/antibody_escape/by_selection/LibB-250415-12B2/LibB-250415-NipahF-CHO-bEFNB3-12B2-2000_prob_escape.csv">LibB-250415-12B2 LibB-250415-NipahF-CHO-bEFNB3-12B2-2000</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/antibody_escape/by_selection/LibB-250415-12B2/LibB-250415-NipahF-CHO-bEFNB3-12B2-4000_prob_escape.csv">LibB-250415-12B2 LibB-250415-NipahF-CHO-bEFNB3-12B2-4000</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/antibody_escape/by_selection/LibA-250310-1A9/LibA-250310-F-CHO-bEFNB3-1A9-1000_prob_escape.csv">LibA-250310-1A9 LibA-250310-F-CHO-bEFNB3-1A9-1000</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/antibody_escape/by_selection/LibA-250310-1A9/LibA-250310-F-CHO-bEFNB3-1A9-5000_prob_escape.csv">LibA-250310-1A9 LibA-250310-F-CHO-bEFNB3-1A9-5000</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/antibody_escape/by_selection/LibA-250326-1A9/LibA-250326-F-CHO-bEFNB3-1A9-300_prob_escape.csv">LibA-250326-1A9 LibA-250326-F-CHO-bEFNB3-1A9-300</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/antibody_escape/by_selection/LibA-250326-1A9/LibA-250326-F-CHO-bEFNB3-1A9-1000_prob_escape.csv">LibA-250326-1A9 LibA-250326-F-CHO-bEFNB3-1A9-1000</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/antibody_escape/by_selection/LibA-250326-1A9/LibA-250326-F-CHO-bEFNB3-1A9-2000_prob_escape.csv">LibA-250326-1A9 LibA-250326-F-CHO-bEFNB3-1A9-2000</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/antibody_escape/by_selection/LibB-250312-1A9/LibB-250312-F-CHO-bEFNB3-1A9-200_prob_escape.csv">LibB-250312-1A9 LibB-250312-F-CHO-bEFNB3-1A9-200</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/antibody_escape/by_selection/LibB-250312-1A9/LibB-250312-F-CHO-bEFNB3-1A9-1000_prob_escape.csv">LibB-250312-1A9 LibB-250312-F-CHO-bEFNB3-1A9-1000</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/antibody_escape/by_selection/LibB-250312-1A9/LibB-250312-F-CHO-bEFNB3-1A9-4000_prob_escape.csv">LibB-250312-1A9 LibB-250312-F-CHO-bEFNB3-1A9-4000</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/antibody_escape/by_selection/LibB-250411-1A9/LibB-250411-NipahF-CHO-bEFNB3-1A9-700_prob_escape.csv">LibB-250411-1A9 LibB-250411-NipahF-CHO-bEFNB3-1A9-700</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/antibody_escape/by_selection/LibA-250325-1F2/LibA-250325-F-CHO-bEFNB3-1F2-500_prob_escape.csv">LibA-250325-1F2 LibA-250325-F-CHO-bEFNB3-1F2-500</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/antibody_escape/by_selection/LibA-250325-1F2/LibA-250325-F-CHO-bEFNB3-1F2-800_prob_escape.csv">LibA-250325-1F2 LibA-250325-F-CHO-bEFNB3-1F2-800</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/antibody_escape/by_selection/LibA-250325-1F2/LibA-250325-F-CHO-bEFNB3-1F2-1500_prob_escape.csv">LibA-250325-1F2 LibA-250325-F-CHO-bEFNB3-1F2-1500</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/antibody_escape/by_selection/LibA-250429-1F2/LibA-250429-NipahF-CHO-bEFNB3-1F2-500_prob_escape.csv">LibA-250429-1F2 LibA-250429-NipahF-CHO-bEFNB3-1F2-500</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/antibody_escape/by_selection/LibA-250429-1F2/LibA-250429-NipahF-CHO-bEFNB3-1F2-1100_prob_escape.csv">LibA-250429-1F2 LibA-250429-NipahF-CHO-bEFNB3-1F2-1100</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/antibody_escape/by_selection/LibA-250429-1F2/LibA-250429-NipahF-CHO-bEFNB3-1F2-1500_prob_escape.csv">LibA-250429-1F2 LibA-250429-NipahF-CHO-bEFNB3-1F2-1500</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/antibody_escape/by_selection/LibA-250605-1F2/LibA-250605-NipahF-CHO-bEFNB3-1F2-700_prob_escape.csv">LibA-250605-1F2 LibA-250605-NipahF-CHO-bEFNB3-1F2-700</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/antibody_escape/by_selection/LibA-250605-1F2/LibA-250605-NipahF-CHO-bEFNB3-1F2-1600_prob_escape.csv">LibA-250605-1F2 LibA-250605-NipahF-CHO-bEFNB3-1F2-1600</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/antibody_escape/by_selection/LibA-250605-1F2/LibA-250605-NipahF-CHO-bEFNB3-1F2-2300_prob_escape.csv">LibA-250605-1F2 LibA-250605-NipahF-CHO-bEFNB3-1F2-2300</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/antibody_escape/by_selection/LibA-250605-1F2/LibA-250605-NipahF-CHO-bEFNB3-1F2-4500_prob_escape.csv">LibA-250605-1F2 LibA-250605-NipahF-CHO-bEFNB3-1F2-4500</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/antibody_escape/by_selection/LibB-250411-1F2/LibB-250411-NipahF-CHO-bEFNB3-1F2-450_prob_escape.csv">LibB-250411-1F2 LibB-250411-NipahF-CHO-bEFNB3-1F2-450</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/antibody_escape/by_selection/LibB-250411-1F2/LibB-250411-NipahF-CHO-bEFNB3-1F2-1200_prob_escape.csv">LibB-250411-1F2 LibB-250411-NipahF-CHO-bEFNB3-1F2-1200</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/antibody_escape/by_selection/LibB-250429-1F2/LibB-250429-NipahF-CHO-bEFNB3-1F2-500_prob_escape.csv">LibB-250429-1F2 LibB-250429-NipahF-CHO-bEFNB3-1F2-500</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/antibody_escape/by_selection/LibB-250429-1F2/LibB-250429-NipahF-CHO-bEFNB3-1F2-1100_prob_escape.csv">LibB-250429-1F2 LibB-250429-NipahF-CHO-bEFNB3-1F2-1100</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/antibody_escape/by_selection/LibB-250429-1F2/LibB-250429-NipahF-CHO-bEFNB3-1F2-1500_prob_escape.csv">LibB-250429-1F2 LibB-250429-NipahF-CHO-bEFNB3-1F2-1500</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/antibody_escape/by_selection/LibB-250605-1F2/LibB-250605-NipahF-CHO-bEFNB3-1F2-700_prob_escape.csv">LibB-250605-1F2 LibB-250605-NipahF-CHO-bEFNB3-1F2-700</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/antibody_escape/by_selection/LibB-250605-1F2/LibB-250605-NipahF-CHO-bEFNB3-1F2-1600_prob_escape.csv">LibB-250605-1F2 LibB-250605-NipahF-CHO-bEFNB3-1F2-1600</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/antibody_escape/by_selection/LibB-250605-1F2/LibB-250605-NipahF-CHO-bEFNB3-1F2-2300_prob_escape.csv">LibB-250605-1F2 LibB-250605-NipahF-CHO-bEFNB3-1F2-2300</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/antibody_escape/by_selection/LibB-250605-1F2/LibB-250605-NipahF-CHO-bEFNB3-1F2-4500_prob_escape.csv">LibB-250605-1F2 LibB-250605-NipahF-CHO-bEFNB3-1F2-4500</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/antibody_escape/by_selection/LibA-250310-2B12/LibA-250310-F-CHO-bEFNB3-2B12-1000_prob_escape.csv">LibA-250310-2B12 LibA-250310-F-CHO-bEFNB3-2B12-1000</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/antibody_escape/by_selection/LibA-250310-2B12/LibA-250310-F-CHO-bEFNB3-2B12-5000_prob_escape.csv">LibA-250310-2B12 LibA-250310-F-CHO-bEFNB3-2B12-5000</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/antibody_escape/by_selection/LibA-250325-2B12/LibA-250325-F-CHO-bEFNB3-2B12-1000_prob_escape.csv">LibA-250325-2B12 LibA-250325-F-CHO-bEFNB3-2B12-1000</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/antibody_escape/by_selection/LibA-250325-2B12/LibA-250325-F-CHO-bEFNB3-2B12-2500_prob_escape.csv">LibA-250325-2B12 LibA-250325-F-CHO-bEFNB3-2B12-2500</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/antibody_escape/by_selection/LibB-250411-2B12/LibB-250411-NipahF-CHO-bEFNB3-2B12-1500_prob_escape.csv">LibB-250411-2B12 LibB-250411-NipahF-CHO-bEFNB3-2B12-1500</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/antibody_escape/by_selection/LibB-250411-2B12/LibB-250411-NipahF-CHO-bEFNB3-2B12-4000_prob_escape.csv">LibB-250411-2B12 LibB-250411-NipahF-CHO-bEFNB3-2B12-4000</a></li>
+</ul></details>
+
+</li>
+<li><details><summary>antibody escape CSVs (click triangle to expand/collapse)</summary><ul>
+
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/antibody_escape/averages/4H3_mut_effect.csv">4H3</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/antibody_escape/averages/2D3_mut_effect.csv">2D3</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/antibody_escape/averages/12B2_mut_effect.csv">12B2</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/antibody_escape/averages/1A9_mut_effect.csv">1A9</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/antibody_escape/averages/1F2_mut_effect.csv">1F2</a></li>
+<li><a href="https://github.com/dms-vep/Nipah_Malaysia_RBP_DMS/blob/main/results/antibody_escape/averages/2B12_mut_effect.csv">2B12</a></li>
+</ul></details>
+
+</li>
+</ul>

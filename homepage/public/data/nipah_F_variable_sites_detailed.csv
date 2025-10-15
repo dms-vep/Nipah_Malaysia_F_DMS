@@ -1,0 +1,15 @@
+site,wildtype,mutant,mutation_count,mutation_type
+2,V,A,80,V->A
+6,D,N,80,D->N
+9,C,Y,80,C->Y
+10,Y,N,2,Y->N
+11,C,S,81,C->S
+13,L,F,2,L->F
+15,I,L,14,I->L
+19,M,I,21,M->I
+36,I,V,2,I->V
+42,V,I,81,V->I
+249,A,T,2,A->T
+273,S,G,79,S->G
+367,L,M,3,L->M
+503,A,V,2,A->V
