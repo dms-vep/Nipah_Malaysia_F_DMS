@@ -45,3 +45,4 @@ dependencies:
       - polyclonal==6.14
       - vl-convert-python
       - hydride
+      - marimo

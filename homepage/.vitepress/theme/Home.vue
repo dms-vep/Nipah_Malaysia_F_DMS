@@ -57,6 +57,7 @@ onBeforeUnmount(() => {
                 <h1 class="text-xl md:text-2xl font-bold tracking-tight text-zinc-600 max-w-lg mx-auto">
                     Deep mutational scanning to characterize viral evolution and antibody escape
                 </h1>
+                <a href="https://www.biorxiv.org/content/10.1101/2025.10.15.682664v1">Link to preprint</a>
 
                 <div class="group">
                     <div class="flex flex-col gap-1 pt-8">
@@ -86,7 +87,8 @@ onBeforeUnmount(() => {
                     <p>
                         Nipah is a bat-borne virus that sporadically spills over into human populations, causing
                         severe disease with high fatality rates. There are no approved vaccines or
-                        therapeutics available for the prevention or treatment of Nipah virus infection. Spillovers primarily occur in Bangladesh and India.
+                        therapeutics available for the prevention or treatment of Nipah virus infection. Spillovers
+                        primarily occur in Bangladesh and India.
                     </p>
 
                     <RadialPhylogeny />
@@ -232,7 +234,7 @@ onBeforeUnmount(() => {
 
 
                     <p class="py-8">Toggle between the different antibodies to see the sites with the most combined
-                        escape. 
+                        escape.
                     </p>
                     <D3PlotContainer>
                         <ScatterPlotDropdown />
