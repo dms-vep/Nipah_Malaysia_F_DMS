@@ -18,6 +18,16 @@ permissions:
 
 
 jobs:
+  cleanup:
+      runs-on: ubuntu-latest
+      permissions: write-all
+      steps:
+        - name: Delete Deployment Environment
+          uses: strumwolf/delete-deployment-environment@v3
+          with:
+            token: ${{ secrets.GITHUB_TOKEN }}
+            environment: github-pages
+            onlyRemoveDeployments: true
   build:
     runs-on: ubuntu-latest
     steps:
@@ -48,7 +58,7 @@ jobs:
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
-    needs: build
+    needs: [build, cleanup]
     runs-on: ubuntu-latest
     name: Deploy
     steps:
