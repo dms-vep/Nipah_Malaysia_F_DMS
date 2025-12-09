@@ -6,6 +6,9 @@ _*
 !.gitignore
 !.gitmodules
 
+sra_upload/*
+data/barcode_runs_SRA.csv
+data/.DS_Store
 analysis/results/figures/*
 analysis/results/logs/*
 
