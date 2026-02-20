@@ -57,7 +57,7 @@ onBeforeUnmount(() => {
                 <h1 class="text-xl md:text-2xl font-bold tracking-tight text-zinc-600 max-w-lg mx-auto">
                     Deep mutational scanning to characterize viral evolution and antibody escape
                 </h1>
-                <a href="https://www.biorxiv.org/content/10.1101/2025.10.15.682664v1">Link to preprint</a>
+                <a href="https://www.pnas.org/doi/10.1073/pnas.2529505123">Link to manuscript</a>
 
                 <div class="group">
                     <div class="flex flex-col gap-1 pt-8">
